@@ -11,7 +11,7 @@ def main():
 
     safe_reports = sum([
         1 for report in reports
-        if is_safe(report)
+        if is_safe(report) or is_safe_v2(report)
     ])
 
     print(safe_reports)
@@ -39,6 +39,20 @@ def is_safe(report: str):
             return False
 
     return True
+
+
+def is_safe_v2(report: str):
+    """Return true if the report can become safe after removing one element"""
+    report = list(map(int, report.split(" ")))
+
+    for i in range(0, len(report)):
+        temporary_report = report.copy()
+        temporary_report.pop(i)
+
+        if is_safe(" ".join(map(str, temporary_report))):
+            return True
+
+    return False
 
 
 if __name__ == '__main__':
