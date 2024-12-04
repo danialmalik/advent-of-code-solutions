@@ -19,11 +19,11 @@ fn main() -> io::Result<()> {
 
             // Part-1:
             if *cell == 'X' {
-                total_xmas_occurrences += find_xmas_occurrences(&grid, i, j);
+                total_xmas_occurrences += find_xmas_occurrences(&grid, i.try_into().unwrap(), j.try_into().unwrap());
             }
             // Part-2
             else if *cell == 'A' {
-                total_cross_mas_occurrences += find_x_mas_occurrences(&grid, i, j) as u32;
+                total_cross_mas_occurrences += find_x_mas_occurrences(&grid, i.try_into().unwrap(), j.try_into().unwrap()) as u32;
             }
         }
     }
@@ -34,48 +34,23 @@ fn main() -> io::Result<()> {
     Ok(())
 }
 
-fn find_xmas_occurrences(grid: &Vec<Vec<char>>, i: usize, j: usize) -> u32 {
-    let mut xmas_occurrences = 0;
-    const TARGET: &str = "XMAS";
-
-    let directions: [[i8; 2]; 8] = [
-        [1,0], // right
-        [1,1], // right-down
-        [0,1], // down
-        [-1,1], // left-down
-        [-1,0], // left
-        [-1,-1], // left-up
-        [0,-1], // up
-        [1,-1], // right-up
+fn find_xmas_occurrences(grid: &[Vec<char>], i: isize, j: isize) -> u32 {
+    const TARGET: &[char] = &['X', 'M', 'A', 'S'];
+    let directions: &[(isize, isize)] = &[
+        (1, 0), (1, 1), (0, 1), (-1, 1),
+        (-1, 0), (-1, -1), (0, -1), (1, -1),
     ];
 
-   for direction in directions {
-        let mut x: i32 = i as i32;
-        let mut y: i32 = j as i32;
-        let mut k: u8 = 1;
-        let mut found: bool = true;
-
-        while (k as usize) < TARGET.len() {
-            x += direction[0] as i32;
-            y += direction[1] as i32;
-
-            if !is_valid_pos(grid, x, y) || grid[x as usize][y as usize] != TARGET.chars().nth(k as usize).unwrap() {
-                found = false;
-                break;
-            }
-
-            k += 1;
-        }
-
-        if found {
-            xmas_occurrences += 1;
-        }
-    }
-
-    xmas_occurrences
+    directions.iter().filter(|&&(dx, dy)| {
+        (0..TARGET.len()).all(|k| {
+            let x = i + k as isize * dx;
+            let y = j + k as isize * dy;
+            is_valid_pos(grid, x, y) && grid[x as usize][y as usize] == TARGET[k]
+        })
+    }).count() as u32
 }
 
-fn find_x_mas_occurrences(grid: &Vec<Vec<char>>, i: usize, j: usize) -> u8 {
+fn find_x_mas_occurrences(grid: &Vec<Vec<char>>, i: isize, j: isize) -> u8 {
     // Find count of X-MAS in the grid
     // X-MAS means two MAS in cross. like
 
@@ -108,7 +83,7 @@ fn find_x_mas_occurrences(grid: &Vec<Vec<char>>, i: usize, j: usize) -> u8 {
         "SMASM",
     ];
 
-    let reading_direction: [[i8; 2]; 5] = [
+    let reading_direction: [[isize; 2]; 5] = [
         [-1, 1], // left-up
         [1, 1], // right-up
         [0, 0], // Center
@@ -119,8 +94,8 @@ fn find_x_mas_occurrences(grid: &Vec<Vec<char>>, i: usize, j: usize) -> u8 {
     let mut candidate: String = String::new();
 
     for direction in reading_direction {
-        let x: i32 = i as i32 + direction[0] as i32;
-        let y: i32 = j as i32 + direction[1] as i32;
+        let x = i + direction[0];
+        let y = j + direction[1];
         if is_valid_pos(grid, x, y) {
             candidate.push(grid[(x) as usize][(y) as usize]);
         }
@@ -134,6 +109,6 @@ fn find_x_mas_occurrences(grid: &Vec<Vec<char>>, i: usize, j: usize) -> u8 {
     0
 }
 
-fn is_valid_pos(grid: &Vec<Vec<char>>, i: i32, j: i32) -> bool {
-    i >= 0 && i < (grid.len() as i32) && j >= 0 && j < (grid[i as usize].len() as i32)
+fn is_valid_pos(grid: &[Vec<char>], i: isize, j: isize) -> bool {
+    i >= 0 && i < grid.len() as isize && j >= 0 && j < grid[i as usize].len() as isize
 }
