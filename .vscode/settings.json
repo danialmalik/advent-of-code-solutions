@@ -1,0 +1,9 @@
+{
+    "rust-analyzer.linkedProjects": [
+        "${workspaceFolder}/2024/01/Cargo.toml",
+        "${workspaceFolder}/2024/02/Cargo.toml",
+        "${workspaceFolder}/2024/03/Cargo.toml",
+        "${workspaceFolder}/2024/04/Cargo.toml",
+        "${workspaceFolder}/2024/05/Cargo.toml"
+    ]
+}
