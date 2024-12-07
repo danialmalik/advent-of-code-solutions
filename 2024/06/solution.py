@@ -1,7 +1,6 @@
 from collections import defaultdict
-from functools import cmp_to_key
 import os
-from typing import Callable, DefaultDict
+from typing import DefaultDict
 
 
 def main():
@@ -31,7 +30,7 @@ def main():
     possible_obstacles = find_possible_obstacles_for_loop(visited, grid, starting_position, starting_direction, max_row, max_col)
 
     print("Part-1: ", len({k for k, v in visited}))
-    print("Part-2: ", len(possible_obstacles))
+    print("Part-2: ", possible_obstacles)
 
 
 def map_patrol_route(
@@ -40,14 +39,14 @@ def map_patrol_route(
         starting_direction: tuple[int, int],
         max_row: int,
         max_col: int
-) -> tuple[list[tuple[int, int]], bool]:
+) -> tuple[set[tuple[int, int]], bool]:
 
-    visited = list()
+    visited = set()
     current_position = starting_position
     current_direction = starting_direction
 
     while not is_out_of_map(current_position, max_row, max_col):
-        visited.append((current_position, current_direction))
+        visited.add((current_position, current_direction))
 
         current_direction = get_next_direction(current_position, current_direction, grid)
         current_position = (current_position[0] + current_direction[0], current_position[1] + current_direction[1])
@@ -59,16 +58,16 @@ def map_patrol_route(
 
 
 def find_possible_obstacles_for_loop(
-    visited: list[tuple[int, int]],
+    visited: set[tuple[int, int]],
     grid: DefaultDict,
     starting_position: tuple[int, int],
     starting_direction: tuple[int, int],
     max_row: int,
     max_col: int
-) -> set[tuple[int, int]]:
-    possible_obstacles = set()
+) -> int:
+    possible_obstacles = 0
 
-    for position, direction in visited:
+    for position, _ in visited:
 
         grid[position] = "#"
 
@@ -81,7 +80,7 @@ def find_possible_obstacles_for_loop(
         )
 
         if is_loop:
-            possible_obstacles.add(position)
+            possible_obstacles += 1
 
         del grid[position]
 
