@@ -16,8 +16,6 @@ test_input = """190: 10 19
 def main():
     script_dir = os.path.dirname(__file__)
 
-    final_result_p1 = 0
-
     with open(f"{script_dir}/input.txt", "r") as f:
         lines = f.readlines()
         print("Part-1: ", find_calibration_results(lines))
@@ -27,15 +25,16 @@ def main():
 def find_calibration_results(lines, include_pipe=False):
     final_result = 0
 
+    operators = ['+', '*']
+
+    if include_pipe:
+        operators.append('||')
+
     for line in lines:
 
             result, operands_str = line.split(': ')
             result = int(result)
             operands = list(map(int, operands_str.split(' ')))
-            operators = ['+', '*']
-
-            if include_pipe:
-                operators.append('||')
 
             for op_permutation in itertools.product(operators, repeat=len(operands) - 1):
 
