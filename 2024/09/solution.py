@@ -135,6 +135,8 @@ def solve_part_2(line: str):
                     free_block.size -= file_block.size
                     free_block.starting_position += file_block.size
 
+                free_blocks = defrag_free_blocks(free_blocks)
+
                 break
 
         visualize_line(file_blocks, free_blocks)
