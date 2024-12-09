@@ -7,6 +7,11 @@
         "${workspaceFolder}/2024/05/Cargo.toml",
         "${workspaceFolder}/2024/06/Cargo.toml",
         "${workspaceFolder}/2024/07/Cargo.toml",
-        "${workspaceFolder}/2024/08/Cargo.toml"
+        "${workspaceFolder}/2024/08/Cargo.toml",
+        "${workspaceFolder}/2024/09/Cargo.toml",
+        "${workspaceFolder}/2024/10/Cargo.toml",
+        "${workspaceFolder}/2024/11/Cargo.toml",
+        "${workspaceFolder}/2024/12/Cargo.toml",
+        "${workspaceFolder}/2024/13/Cargo.toml",
     ]
 }
